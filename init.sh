@@ -187,9 +187,7 @@ pkgInstall () {
 }
 #END PKGINSTALL FUNCTION
 
-
-
-#STARTING SCRIPT
+#START MAIN SCRIPT
 clear
 banner
 echo "Starting script"
@@ -207,6 +205,51 @@ echo
 echo "Getting the Installer ready..."
 echo
 echo "Downloading Setup Script to /home/$sudoUser"
-wget 
-installSetup
+wget -nv -O /home/$sudoUser/setup.sh https://raw.githubusercontent.com/harbornode-ca/pwSetup/refs/heads/main/setup.sh
+exitStat=$?
+errMsg="Failed to download setup script"
+successMsg="Setup script downloaded successfully"
+cmdFail
 echo
+echo "Setting permissions to install script"
+echo
+echo "Changing ownership of setup script"
+chown $sudoUser:$sudoUser /home/$sudoUser/setup.sh
+exitStat=$?
+errMsg="Failed to change ownership"
+successMsg="Ownership changed successfully"
+cmdFail
+echo "Making setup script executable"
+chmod +x /home/$sudoUser/setup.sh
+exitStat=$?
+errMsg="Failed to set permissions"
+successMsg="Permissions set successfully"
+cmdFail
+echo
+echo "Installation Process Complete"
+echo
+echo "The system needs to reboot to finalize changes"
+echo "Once the system has rebooted, login as $sudoUser"
+echo "and run the setup.sh script in the home directory"
+echo
+read -p "Are you ready to reboot now? [y/n]" confirm
+if ["$confirm" = "y" ]; then
+    echo 
+    echo "Rebooting the system..."
+    sleep 1
+    reboot
+    exit 0
+elif [ "$confirm" = "n" ]; then
+    echo
+    echo "The system requires a reboot to finalize changes"
+    echo "Please reboot the system before running the setup.sh script"
+    sleep 3
+    clear
+    exit 0
+else
+    invalid
+    init
+fi
+#END MAIN SCRIPT
+    
+
