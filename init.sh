@@ -205,7 +205,7 @@ echo
 echo "Getting the Installer ready..."
 echo
 echo "Downloading Setup Script to /home/$sudoUser"
-wget -nv -O /home/$sudoUser/setup.sh https://raw.githubusercontent.com/harbornode-ca/pwSetup/refs/heads/main/setup.sh
+wget -nv -O /home/$sudoUser/setup.sh https://raw.githubusercontent.com/harbornode-ca/pwSetup/refs/heads/main/data/setup.sh
 exitStat=$?
 errMsg="Failed to download setup script"
 successMsg="Setup script downloaded successfully"

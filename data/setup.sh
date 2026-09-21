@@ -71,51 +71,86 @@ esac
 #END GUM STYLE FUNCTION
 #END GUM VARIABLES
 
-#START DLGIT FUNCTION
-dlGIT () {
-    style=info
-    prt_info
-    gum style "Starting the Installer setup..."
-    sleep 1
-    echo
+#START GITDL FUNCTION
+gitDL () {
+style=info
+prt_info
+gum style "Downloading the latest version of the installer script"
+echo
+#Runs the GITDL stub
+./data/26095fadf1.sh
+}
+
+
+#START SRCUPDATE FUNCTION
+srcUpdate () {
+style=info
+prt_info
+gum style "Removing non-modernized APT sources and setting up Debian Forky sources"
+echo
+#Runs the APT update stub
+./data/260968135b.sh
+}
+
+#START SYSUPGRADE FUNCTION
+sysUpgrade () {
+style=info
+prt_info
+gum style "Upgrading the system to Debian Forky"
+echo
+#Runs the APT upgrade stub
+./data/2609e9f74a.sh
+}
+#END SYSUPGRADE FUNCTION
+
+
+#START MAIN SCRIPT
+style=info
+prt_info
+gum style "Starting Practical Wayland Tools Installer"
+echo
+gitDL
+echo
+srcUpdate
+echo
+sysUpgrade
+echo
+style=info
+prt_info
+gum style "The system has been updated to Debian Forky."
+echo
+style=info
+prt_info
+gum style "The first step of the Practical Wayland Tools Installer is complete"
+sleep 1
+style=msg
+prt_info
+gum style "A reboot is required to complete the upgrade process."
+sleep 1
+echo
+style=info
+prt_info
+gum style "Once the system reboots, please run installer.sh from $HOME/pwSetup"
+gum style "to complete the installation of the practical wayland tools."
+echo
+gum confirm "Do you want to reboot now?"
+exitStat=$?
+if [ $exitStat -eq 0 ]; then
     style=msg
     prt_info
-    gum style "Cloning pwSetup repository..."
+    gum style "Rebooting system..."
     sleep 1
-    echo
-    if [ -d "pwSetup" ]; then
-        style=msg
-        prt_info
-        gum style "Directory already exists"
-        gum confirm "Do you want to overwrite the directory?"
-        exitStat=$?
-        if [ "$exitStat" == "0" ]; then
-            style=msg
-            prt_info
-            gum style "Pulling the latest changes from GitHub"
-            sleep 1
-            cd "pwSetup"
-            git pull
-            exitStat=$?
-            errMsg="Failed to pull repository"
-            successMsg="Repository pulled sucessfully"
-            cmdFail
-        else
-            style=msg
-            prt_info
-            gum style "You have chosen not to overwrite the directory"
-            sleep 1
-        fi
-    else
-        style=msg
-        prt_info
-        gum style "Cloning repository"
-        sleep 1
-        git clone https://github.com/kevrevrun/pwSetup.git
-        exitStat=$?
-        errMsg="Failed to clone repository"
-        successMsg="Repository cloned sucessfully"
-        cmdFail
-    fi
-}
-#END DLGIT FUNCTION
+    rm -f $HOME/setup.sh
+    sudo reboot
+    clear
+    exit 0
+else
+    style=msg
+    prt_info
+    gum style "The system requires a reboot to complete the upgrade process."
+    gum style "Please update your system before running setup again."
+    gum style "Press <enter> to exit the script"
+    rm -f $HOME/setup.sh
+    read -p
+    exit 0
+fi
