@@ -40,8 +40,7 @@ esac
 }
 #END GUM STYLE FUNCTION
 
-#START DLGIT FUNCTION
-dlGIT () {
+#START DLGIT STUB
     style=info
     prt_info
     gum style "Starting the Installer setup..."
@@ -86,5 +85,4 @@ dlGIT () {
         successMsg="Repository cloned sucessfully"
         cmdFail
     fi
-}
-#END DLGIT FUNCTION
+#END DLGIT STUB
