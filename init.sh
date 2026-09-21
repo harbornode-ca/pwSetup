@@ -251,5 +251,3 @@ else
     init
 fi
 #END MAIN SCRIPT
-    
-
